@@ -1,0 +1,97 @@
+body {
+  background-color: rgb(9, 57, 9);
+  color: white;
+}
+
+h1 {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 2.5em;
+}
+#heading {
+  display: flex;
+  justify-content: center;
+}
+
+select {
+  border-radius: 5px;
+  box-shadow: 5px 9px 5px rgb(18, 17, 17);
+}
+
+button {
+  margin-left: 5px;
+  border-radius: 5px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  box-shadow: 5px 9px 5px rgb(18, 17, 17);
+}
+
+button:active {
+  background-color: white;
+  box-shadow: 0 5px 5px rgb(18, 17, 17);
+  box-shadow: 5px 5px 20px;
+  transform: translateY(2px);
+}
+#selection {
+  display: flex;
+  justify-content: center;
+}
+
+#cardDiv {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 35px;
+}
+
+#cardImg {
+  transition: 0.8s;
+  margin: 20px;
+  width: 170px;
+}
+
+#cardImg:hover {
+  transform: scale(1.14);
+  box-shadow: 0 5px 205px rgb(255, 247, 9);
+  /* visibility: hidden; */
+}
+
+#result {
+  display: grid;
+  grid-template-columns: 267px 269px;
+  grid-gap: 50px;
+  justify-content: center;
+}
+
+#resultPara {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 1.9em;
+  border-top: 10px solid black;
+  border-bottom: 10px solid black;
+  border-right: 10px solid white;
+  border-left: 10px solid white;
+  border-radius: 5px;
+  box-shadow: 25px 9px 25px rgb(18, 17, 18);
+  background-color: rgba(155, 93, 103, 0.253);
+  padding: 70px;
+}
+
+#sumPara {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 1.65em;
+  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: 25px 9px 25px rgb(18, 17, 18);
+  background-color: rgba(155, 93, 103, 0.253);
+  padding: 70px;
+  border-top: 10px solid black;
+  border-bottom: 10px solid black;
+  border-right: 10px solid white;
+  border-left: 10px solid white;
+}
+
+#hitBtn {
+  display: grid;
+  justify-self: center;
+}
