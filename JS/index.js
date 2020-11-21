@@ -2,13 +2,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   await createNewDeck();
   drawCardBtn();
 });
+
 let deckID;
 let arr = [];
+let resetGame = false;
 
 const drawCardBtn = () => {
   let drawCardsBtn = document.querySelector("#drawCard");
   drawCardsBtn.addEventListener("click", () => {
     drawCards();
+    gameReset();
   });
 };
 
@@ -66,29 +69,15 @@ const displayCards = (cards) => {
   }
 };
 
-const reshuffleDeck = async () => {
-  let url = `https://deckofcardsapi.com/api/deck/${deckID}/shuffle/`;
-  try {
-    let response = await axios.get(url);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const scoreCards = (cards) => {
   let result = document.querySelector("#result");
   let prevPara = document.querySelector("#resultPara");
-  let prevSumPara = document.querySelector("#sumPara");
   if (prevPara) {
     result.removeChild(prevPara);
-    result.removeChild(prevSumPara);
   }
-  let sumPara = document.createElement("p");
-  sumPara.id = "sumPara";
   let resultPara = document.createElement("p");
   resultPara.id = "resultPara";
   result.appendChild(resultPara);
-  result.appendChild(sumPara);
 
   for (let card of cards) {
     arr.push(card.value);
@@ -100,8 +89,8 @@ const scoreCards = (cards) => {
     if (arr[i] === "KING" || arr[i] === "QUEEN" || arr[i] === "JACK") {
       arr[i] = 10;
     }
-    showResult(arr);
   }
+  showResult(arr);
 };
 
 const showResult = (arr) => {
@@ -109,22 +98,95 @@ const showResult = (arr) => {
     let add = parseInt(acc) + parseInt(el);
     return add;
   });
-  console.log(sum);
   if (sum < 21) {
-    resultPara.innerText = `Not 21`;
-    sumPara.innerText = `Sum = ${sum}`;
+    resultPara.innerText = `Player 1 Score: ${sum}`;
     let hitBtn = document.createElement("button");
     hitBtn.id = "hitBtn";
     hitBtn.innerText = "Hit";
+    let stayBtn = document.createElement("button");
+    stayBtn.id = "stay";
+    stayBtn.innerText = "Stay";
     hitBtn.addEventListener("click", () => {
       drawSingleCard();
     });
+    stayBtn.addEventListener("click", () => {
+      stay();
+    });
     resultPara.appendChild(hitBtn);
+    resultPara.appendChild(stayBtn);
   } else if (sum > 21) {
-    resultPara.innerText = "Bust";
-    sumPara.innerText = `Sum = ${sum}`;
+    let indx = arr.indexOf(11);
+    if (indx > -1) {
+      arr[indx] = 1;
+      showResult(arr);
+      return;
+    }
+    resultPara.innerText = `Bust. Player 1 Score: ${sum}`;
   } else if (sum === 21) {
-    resultPara.innerText = "BLACKJACK";
-    sumPara.innerText = `Sum = ${sum}`;
+    resultPara.innerText = `BLACKJACK. You win!!`;
+  }
+};
+
+const stay = async () => {
+  let url = `https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=3`;
+  try {
+    let response = await axios.get(url);
+    let threeCards = response.data.cards;
+    displayCards(threeCards);
+    scoreStayCards(threeCards);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const scoreStayCards = (cards) => {
+  let result = document.querySelector("#result");
+  let prevSumPara = document.querySelector("#sumPara");
+  if (prevSumPara) {
+    result.removeChild(prevSumPara);
+  }
+  let sumPara = document.createElement("p");
+  sumPara.id = "sumPara";
+  result.appendChild(sumPara);
+  let stayarr = [];
+  for (let card of cards) {
+    stayarr.push(card.value);
+  }
+  for (let i = 0; i < stayarr.length; i++) {
+    if (stayarr[i] === "ACE") {
+      stayarr[i] = 11;
+    }
+    if (
+      stayarr[i] === "KING" ||
+      stayarr[i] === "QUEEN" ||
+      stayarr[i] === "JACK"
+    ) {
+      stayarr[i] = 10;
+    }
+  }
+  displayFinal(stayarr);
+};
+
+const displayFinal = (stayarr) => {
+  let sums = stayarr.reduce((acc, el) => {
+    let adds = parseInt(acc) + parseInt(el);
+    return adds;
+  });
+  if (sums < 21) {
+    sumPara.innerText = `Opponent Score: ${sums}`;
+  } else if (sums > 21) {
+    sumPara.innerText = `BUST!! Opponent Score: ${sums}`;
+  } else if (sums === 21) {
+    sumPara.innerText = `BLACKJACK. You win!!`;
+  }
+  resetGame = true;
+};
+
+const gameReset = () => {
+  if (resetGame === true) {
+    let main = document.querySelector("#firstEx");
+    let result = document.querySelector("#result");
+    main.innerHTML = "";
+    result.innerHTML = "";
   }
 };

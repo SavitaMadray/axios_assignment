@@ -74,6 +74,7 @@ button:active {
   box-shadow: 25px 9px 25px rgb(18, 17, 18);
   background-color: rgba(155, 93, 103, 0.253);
   padding: 70px;
+  text-align: center;
 }
 
 #sumPara {
